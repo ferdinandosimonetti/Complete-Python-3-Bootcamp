@@ -4,7 +4,6 @@ from time import sleep
 
 # I want to use a simple monodimensional list for the gametable
 # I have to find a way to select discontinuous elements of a list
-# this is a list of functions
 checker = []
 checker.append(itemgetter(0,3,6))
 checker.append(itemgetter(1,4,7))
@@ -17,14 +16,14 @@ checker.append(itemgetter(0,1,2))
 checker.append(itemgetter(3,4,5))
 checker.append(itemgetter(6,7,8))
 
-def initialize(gametable):
+def initialize():
   '''
   The list representing the game table is filled with "-" placeholders
   '''
+  global gametable
   gametable = []
   for _ in range(0,9):
     gametable.append('-')
-  return gametable
 
 def clearscreen():
   '''
@@ -35,11 +34,12 @@ def clearscreen():
   else:
     _ = system('clear')
     
-def redraw(gametable):
+def redraw():
   '''
   Definitely cut some corners here, the table is not at all fancy.
   I'm drawing the game table by subdividing the representing list in three rows.
   '''
+  global gametable
   sleep(1)
   clearscreen()
   print (''.join(gametable[:3]))
@@ -49,8 +49,8 @@ def redraw(gametable):
 
 def win(player,gametable):
   '''
-  It's better than eight "if"s
-  But it's not very readable
+  Ugly way to find out if someone has won
+  There should be a better way
   '''
   haswon = 0
   for _ in checker:
@@ -59,20 +59,23 @@ def win(player,gametable):
     print(f'{player} has won!')
   return bool(haswon)
 
-def fulltable(gametable):
+
+def fulltable():
   '''
   If there are no more '-'s inside the list, the game has ended!
   '''
+  global gametable
   if '-' not in gametable:
     print("The game has ended in a draw! No more playable moves.")
     return True
   return False 
 
 # Find out if the player's move is legal
-def playablemove(move,gametable):
+def playablemove(move):
   '''
   You can only play where the table is still empty
   '''
+  global gametable
   # if the input is between '0' and '8'
   if move in (str(i) for i in range(0,9)):
     # if the chosen position is still empty
@@ -81,10 +84,10 @@ def playablemove(move,gametable):
   return False 
 
 # Ask the player to select a move
-def playermove(gametable):
+def playermove():
   global move
   plmove = input("Make your move (0..8): ")
-  if playablemove(plmove,gametable):
+  if playablemove(plmove):
     move = plmove
     return True
   print("Illegal move!")
@@ -96,8 +99,8 @@ gametable = []
 move = "#"
 
 # Start game, the table is empty
-gametable = initialize(gametable)
-redraw(gametable)
+initialize()
+redraw()
 
 print("X plays first, then O")
 player = 'X'
@@ -106,12 +109,12 @@ player = 'X'
 while not win('X',gametable) and not win('O',gametable) and not fulltable():
   print(f"It's {player} turn!")
   # internal while loop continues until the player provides a 'legal' move
-  while not playermove(gametable):
+  while not playermove():
     pass
   # list is updated
   gametable[int(move)] = player
   # and game table is redrawn
-  redraw(gametable)
+  redraw()
   # players should alternate
   if player == 'X':
     player = 'O'
