@@ -103,7 +103,7 @@ print("X plays first, then O")
 player = 'X'
 
 # while loop continues until X wins, O wins or there are no more playable moves
-while not win('X',gametable) and not win('O',gametable) and not fulltable():
+while not win('X',gametable) and not win('O',gametable) and not fulltable(gametable):
   print(f"It's {player} turn!")
   # internal while loop continues until the player provides a 'legal' move
   while not playermove(gametable):
