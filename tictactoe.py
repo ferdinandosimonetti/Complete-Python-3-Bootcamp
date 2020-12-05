@@ -4,6 +4,9 @@ gametable = []
 # obviously illegal move
 move      = "#"
 
+moves = ""
+outcome = ""
+
 if __name__ == "__main__":
   # Start game, the table is empty
   gametable = initialize(gametable)
@@ -22,6 +25,8 @@ if __name__ == "__main__":
         break
     # list is updated
     gametable[int(move)] = player
+    # match history is updated
+    
     # and game table is redrawn
     redraw(gametable)
     # players should alternate

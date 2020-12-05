@@ -54,12 +54,13 @@ def win(player,gametable,announce=True):
     print(f'{player} has won!')
   return bool(haswon)
 
-def fulltable(gametable):
+def fulltable(gametable,announce=True):
   '''
   If there are no more '-'s inside the list, the game has ended!
   '''
   if '-' not in gametable:
-    print("The game has ended in a draw! No more playable moves.")
+    if announce:
+      print("The game has ended in a draw! No more playable moves.")
     return True
   return False 
 
