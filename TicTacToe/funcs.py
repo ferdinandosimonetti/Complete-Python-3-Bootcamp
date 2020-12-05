@@ -33,7 +33,7 @@ def redraw(gametable):
   print (''.join(gametable[3:6]))
   print (''.join(gametable[6:9]))
 
-def win(player,gametable):
+def win(player,gametable,announce=True):
   '''
   Ugly way to find out if someone has won
   There should be a better way
@@ -50,7 +50,7 @@ def win(player,gametable):
   haswon = 0
   for _ in checker:
     haswon += (set(_(gametable)) == set(player))
-  if haswon:
+  if haswon and announce:
     print(f'{player} has won!')
   return bool(haswon)
 
