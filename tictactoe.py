@@ -1,4 +1,5 @@
-from TicTacToe import initialize,clearscreen,redraw,fulltable,playablemove,playermove,win
+#from TicTacToe import initialize,clearscreen,redraw,fulltable,playablemove,playermove,win
+from TicTacToe import *
 # empty table
 gametable = []
 # obviously illegal move
@@ -11,6 +12,8 @@ if __name__ == "__main__":
   # Start game, the table is empty
   gametable = initialize(gametable)
   redraw(gametable)
+  # load previous game history file
+  gamehistory = load_game_history()
 
   print("X plays first, then O")
   player = 'X'
@@ -26,7 +29,7 @@ if __name__ == "__main__":
     # list is updated
     gametable[int(move)] = player
     # match history is updated
-    
+    moves += move
     # and game table is redrawn
     redraw(gametable)
     # players should alternate
@@ -35,4 +38,16 @@ if __name__ == "__main__":
     else:
       player = 'X'
     
-    print('End game')
+  # update the outcome
+  if win('X',gametable,announce=False):
+    outcome = 'X'
+  elif win('O',gametable,announce=False):
+    outcome = 'O'
+  # update gamehistory
+  gamehistory = add_completed_to_history(build_completed_game(moves,outcome),gamehistory)
+  # and save it to file
+  if save_game_history(gamehistory):
+    print("GAME HISTORY SAVED OK!")
+  else:
+    print("GAME HISTORY SAVE KO!!!")
+  print('End game')

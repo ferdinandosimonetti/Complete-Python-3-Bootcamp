@@ -23,7 +23,8 @@ def load_game_history(gamefile="gamefile.json"):
     print(f"No read permission on {gamefile}")
   
 def add_completed_to_history(completed,history):
-  history.append(completed)
+  if completed not in history:
+    history.append(completed)
   return history
 
 def save_game_history(history,gamefile="gamefile.json"):
