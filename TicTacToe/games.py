@@ -42,7 +42,7 @@ def save_game_history(history,gamefile="gamefile.json"):
     return False
 
 def extract_from_history(history,moves,desired="O"):
-  return [_ for _ in gamehistory if _['moves'].startswith(moves) and _['outcome'] == desired]
+  return [_ for _ in history if _['moves'].startswith(moves) and _['outcome'] == desired]
 
 def next_moves(history,moves):
   # how many moves so far? Opponent has already played, now our turn
