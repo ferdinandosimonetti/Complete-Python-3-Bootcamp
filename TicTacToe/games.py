@@ -1,5 +1,6 @@
 import json
 import io
+import random
 
 try:
   to_unicode = unicode
@@ -40,35 +41,46 @@ def save_game_history(history,gamefile="gamefile.json"):
     print(str(e))
     return False
 
+def extract_from_history(history,moves,desired="O"):
+  return [_ for _ in gamehistory if _['moves'].startswith(moves) and _['outcome'] == desired]
+
+def next_moves(history,moves):
+  # how many moves so far? Opponent has already played, now our turn
+  moveslength = len(moves)
+  # extract our moves in the past that led to victory
+  playedmoves = [_[moveslength+1] for _ in history['moves']]
+  # unique moves
+  return set(playedmoves)
+
+def random_move(moves):
+  # using intermediate variables for clarity's sake
+  fulltable = [str(i) for i in range(0,9)]
+  moveslist = [ i for i in moves ]
+  possible = [ i for i in fulltable if i not in set(moveslist)]
+  return random.choice(possible)
+
+def best_move(history,moves,desired='O'):
+  # look for matches won from here
+  wingames = extract_from_history(history,moves,desired)
+  # there are none, going random
+  if len(wingames) == 0:
+    return random_move(moves)
+  # there are one or more
+  else:
+    wins = 0
+    bestmove = ''
+    # for each distinct move played in the past
+    for _ in next_moves(history,moves):
+      # determine how many times the current move led to victory
+      numwins = len(extract_from_history(history,moves+_,desired=desired))
+      # if it's higher than the previous, set new 'wins' and best 'move' so far
+      if numwins > wins:
+        wins = numwins
+        bestmove = _
+    return bestmove
+
+
 if __name__ == "__main__":
-  print("games.py run directly, tests should be run")
-  # load previous history (not existent on first run)
-  gamehistory = load_game_history("test.json")
-  # the match has finished
-  moves = "104753628"
-  # with a draw
-  outcome = ""
-  # update game history in memory
-  gamehistory = add_completed_to_history(build_completed_game(moves,outcome),gamehistory)
-  # and saving it to file
-  if save_game_history(gamehistory,gamefile="test.json"):
-    print("OK!!!")
-  else:
-    print("SAVE KO!!!")
-    exit()
-  # load previous history (now should exist)
-  gamehistory = load_game_history("test.json")
-  # the match has finished
-  moves = "4071286"
-  # X wins|
-  outcome = "X"
-  # update game history in memory
-  gamehistory = add_completed_to_history(build_completed_game(moves,outcome),gamehistory)
-  # and saving it to file
-  if save_game_history(gamehistory,gamefile="test.json"):
-    print("OK!!!")
-  else:
-    print("SAVE KO!!!")
-    exit()
+  print('games.py run directly')
 else:
   print(f'{__name__} imported')
