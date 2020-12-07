@@ -16,6 +16,7 @@ if __name__ == "__main__":
   gamehistory = load_game_history()
   # ask if p1 vs p2 or p1 vs computer
   playerchoice = '#'
+  computerplayso = False
   while playerchoice not in ('y','n'):
     playerchoice = input("Should computer play as O? [Yy/Nn]").lower()
   if playerchoice == 'y':

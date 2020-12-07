@@ -41,17 +41,8 @@ def save_game_history(history,gamefile="gamefile.json"):
     print(str(e))
     return False
 
-def extract_from_history(history,moves,desired="O"):
+def extract_from_history(history,moves,desired="X"):
   return [_ for _ in history if _['moves'].startswith(moves) and _['outcome'] == desired]
-
-def next_moves(history,moves):
-  # how many moves so far? Opponent has already played, now our turn
-  moveslength = len(moves)
-  print(type(moveslength))
-  # extract our moves in the past that led to victory
-  playedmoves = [_[moveslength+1] for _ in history['moves']]
-  # unique moves
-  return set(playedmoves)
 
 def random_move(moves):
   # using intermediate variables for clarity's sake
@@ -60,26 +51,18 @@ def random_move(moves):
   possible = [ i for i in fulltable if i not in set(moveslist)]
   return random.choice(possible)
 
-def best_move(history,moves,desired='O'):
-  # look for matches won from here
-  wingames = extract_from_history(history,moves,desired)
-  # there are none, going random
-  if len(wingames) == 0:
-    return random_move(moves)
-  # there are one or more
-  else:
-    wins = 0
-    bestmove = ''
-    # for each distinct move played in the past
-    for _ in next_moves(history,moves):
-      # determine how many times the current move led to victory
-      numwins = len(extract_from_history(history,moves+_,desired=desired))
-      # if it's higher than the previous, set new 'wins' and best 'move' so far
-      if numwins > wins:
-        wins = numwins
-        bestmove = _
-    return bestmove
-
+def dont_loose(history,moves):
+  # look for matches lost from here
+  lostgames = extract_from_history(history,moves)
+  losthistories = [ _['moves'] for _ in lostgames ]
+  #losingmoves = [ _[len(moves)] for _ in losthistories ]
+  print(losthistories)
+  #print(losingmoves)
+  #dontplaythesemoves = moves + ''.join(set(losingmoves))
+  #print(dontplaythesemoves)
+  _ = input("press any key")
+  # play randomly... 
+  return random_move(moves)
 
 if __name__ == "__main__":
   print('games.py run directly')
