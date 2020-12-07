@@ -14,5 +14,29 @@
   {
     "moves": "01563472",
     "outcome": "O"
+  },
+  {
+    "moves": "15427",
+    "outcome": "X"
+  },
+  {
+    "moves": "18467",
+    "outcome": "X"
+  },
+  {
+    "moves": "13487",
+    "outcome": "X"
+  },
+  {
+    "moves": "1752463",
+    "outcome": "X"
+  },
+  {
+    "moves": "15437",
+    "outcome": "X"
+  },
+  {
+    "moves": "10487",
+    "outcome": "X"
   }
 ]

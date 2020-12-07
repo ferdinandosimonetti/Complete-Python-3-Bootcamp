@@ -14,6 +14,12 @@ if __name__ == "__main__":
   redraw(gametable)
   # load previous game history file
   gamehistory = load_game_history()
+  # ask if p1 vs p2 or p1 vs computer
+  playerchoice = '#'
+  while playerchoice not in ('y','n'):
+    playerchoice = input("Should computer play as O? [Yy/Nn]").lower()
+  if playerchoice == 'y':
+    computerplayso = True
 
   print("X plays first, then O")
   player = 'X'
@@ -23,7 +29,11 @@ if __name__ == "__main__":
     print(f"It's {player} turn!")
     # internal while loop continues until the player provides a 'legal' move
     while True:
-      status, move = playermove(move,gametable)
+      # it's O turn and O is computer?
+      if player == 'O' and computerplayso:
+        status, move = True, dont_loose(gamehistory,moves)
+      else:
+        status, move = playermove(move,gametable)
       if status:
         break
     # list is updated

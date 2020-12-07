@@ -47,6 +47,7 @@ def extract_from_history(history,moves,desired="O"):
 def next_moves(history,moves):
   # how many moves so far? Opponent has already played, now our turn
   moveslength = len(moves)
+  print(type(moveslength))
   # extract our moves in the past that led to victory
   playedmoves = [_[moveslength+1] for _ in history['moves']]
   # unique moves
